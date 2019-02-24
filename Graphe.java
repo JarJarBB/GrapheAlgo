@@ -36,11 +36,13 @@ public class Graphe {
         this(nbSommets, arcs, true);
     }
 
-    public Graphe(int[] fileSuccesseurs, int[] adressesPremierSuccesseur, boolean _oriente) {
-        oriente=_oriente
-        for(int i=1;i<fileSuccesseurs.size();i++){
-            ArrayList<Integer> liste =new ArrayList<Integer>;
-            while(fileSuccesseurs[i]>0 && i<fileSuccesseurs.size()){
+    public Graphe(int[] fileSuccesseurs, boolean _oriente) {
+        oriente = _oriente;
+        successeurs = new ArrayList<ArrayList<Integer>>();
+        successeurs.add(null);
+        for (int i = 1; i < fileSuccesseurs.length; i++) {
+            ArrayList<Integer> liste = new ArrayList<Integer>();
+            while (fileSuccesseurs[i] > 0) {
                 liste.add(fileSuccesseurs[i]);
                 i++;
             }
@@ -48,33 +50,39 @@ public class Graphe {
         }
     }
 
-    public Graphe(int[] fileSuccesseurs, int[] adressesPremierSuccesseur) {
-        this(fileSuccesseurs, adressesPremierSuccesseur, true);
+    public Graphe(int[] fileSuccesseurs) {
+        this(fileSuccesseurs, true);
     }
 
-    public Graphe(int[][] matriceAdjacente, boolean _oriente) {
-        ArrayList<Arc> listeArc = new ArrayList<Arc>;
-        if(oriente){
-            for(int i=0;i< matriceAdjacente.size();i++){
-                for(int j=0;j<matriceAdjacente[0].size();j++){
-                    if(m[i][j]!=0)
-                        listeArc.add(new Arc(i,j));
-                }
-            }
-        }else{
-            for(int i=0;i< matriceAdjacente.size();i++){
-                for(int j=0;j<i;j++){
-                    if(m[i][j]!=0)
-                        listeArc.add(new Arc(i,j));
-                }
-            }
-        }
-        this(matriceAdjacente.size,listeArc,_oriente);
-
+    public Graphe(int[][] matriceAdjacente, boolean oriente) {
+        this(matriceAdjacente.length - 1, MatriceVersListeArcs(matriceAdjacente, oriente), oriente);
     }
 
     public Graphe(int[][] matriceAdjacente) {
         this(matriceAdjacente, true);
+    }
+    
+    public static ArrayList<Arc> MatriceVersListeArcs(int[][] MatriceAdjacence, boolean oriente) {
+        ArrayList<Arc> aL = new ArrayList<Arc>();
+        if (oriente) {
+            for (int i = 1; i < MatriceAdjacence.length; i++) {
+                for (int j = 1; j < MatriceAdjacence[i].length; j++) {
+                    if (MatriceAdjacence[i][j] != 0) {
+                        aL.add(new Arc(i, j));
+                    }
+                }
+            }
+        } else {
+            for (int i = 1; i < MatriceAdjacence.length; i++) {
+                for (int j = 1; j <= i; j++) {
+                    if (MatriceAdjacence[i][j] != 0) {
+                        aL.add(new Arc(i, j));
+                    }
+                }
+            }
+        }
+
+        return aL;
     }
 
     public int[] getFileSuccesseurs() {
@@ -221,7 +229,6 @@ public class Graphe {
         return true;
         // renvoie faux si un arc equivalent à A n'est pas trouvé
     }
-
 
     @Override
     public String toString() {
