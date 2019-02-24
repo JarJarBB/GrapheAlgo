@@ -36,16 +36,41 @@ public class Graphe {
         this(nbSommets, arcs, true);
     }
 
-    public Graphe(int[] fileSuccesseurs, int[] adressesPremierSuccesseur, boolean oriente) {
-        throw new UnsupportedOperationException();
+    public Graphe(int[] fileSuccesseurs, int[] adressesPremierSuccesseur, boolean _oriente) {
+        oriente=_oriente
+        for(int i=1;i<fileSuccesseurs.size();i++){
+            ArrayList<Integer> liste =new ArrayList<Integer>;
+            while(fileSuccesseurs[i]>0 && i<fileSuccesseurs.size()){
+                liste.add(fileSuccesseurs[i]);
+                i++;
+            }
+            successeurs.add(liste);
+        }
     }
 
     public Graphe(int[] fileSuccesseurs, int[] adressesPremierSuccesseur) {
         this(fileSuccesseurs, adressesPremierSuccesseur, true);
     }
 
-    public Graphe(int[][] matriceAdjacente, boolean oriente) {
-        throw new UnsupportedOperationException();
+    public Graphe(int[][] matriceAdjacente, boolean _oriente) {
+        ArrayList<Arc> listeArc = new ArrayList<Arc>;
+        if(oriente){
+            for(int i=0;i< matriceAdjacente.size();i++){
+                for(int j=0;j<matriceAdjacente[0].size();j++){
+                    if(m[i][j]!=0)
+                        listeArc.add(new Arc(i,j));
+                }
+            }
+        }else{
+            for(int i=0;i< matriceAdjacente.size();i++){
+                for(int j=0;j<i;j++){
+                    if(m[i][j]!=0)
+                        listeArc.add(new Arc(i,j));
+                }
+            }
+        }
+        this(matriceAdjacente.size,listeArc,_oriente);
+
     }
 
     public Graphe(int[][] matriceAdjacente) {
@@ -53,15 +78,62 @@ public class Graphe {
     }
 
     public int[] getFileSuccesseurs() {
-        throw new UnsupportedOperationException();
+        int i=0;
+        for(ArrayList<Integer> liste:successeurs){
+            for(int entier:liste)
+                i++;
+            i++;
+        }
+        int[] fs=new int[i+1];
+        fs[0]=i;
+        i=1;
+        for(ArrayList<Integer> liste:successeurs){
+            for(int entier:liste){
+                fs[i]=entier
+                i++;
+            }
+            fs[i]=0;
+            i++;
+        }
+
+        return fs;
     }
 
     public int[] getAdressesPremierSuccesseur() {
-        throw new UnsupportedOperationException();
+        int i=0;
+        for(ArrayList<Integer> liste:successeurs)
+            i++;
+        int[] aps=new int[i+1];
+        aps[0]=i;
+        i=1;
+        int indice=1;
+        for(ArrayList<Integer> liste:successeurs){
+            aps[indice]=i;
+            indice++;
+            for(int entier:liste)
+                i++;
+            i++;
+        }
+
+        return aps;
+
     }
 
     public int[][] getMatriceAdjacente() {
-        throw new UnsupportedOperationException();
+        int[][] matrice =new int[successeurs.size()][successeurs.size()];
+
+        for (int i=0;i<successeurs.size() ;i++ ) {
+            for (int j=0;j<successeurs.size() ;j++ ) {
+                matrice[i][j]=0;
+            }
+        }
+        int depart=1;
+        for(ArrayList<Integer> liste : successeurs){
+            for(int i:liste)
+                matrice[depart][i]=1;
+            depart++;
+        }
+        return matrice;
     }
 
     public boolean isOriente() {
@@ -70,29 +142,86 @@ public class Graphe {
 
     // Les parties suivantes sont nécessaires pour modifier dynamiquement le graphe :
     public void addSommet() {
-        throw new UnsupportedOperationException();
+        successeurs.add(new ArrayList<Integer>);
     }
 
     public boolean removeSommet(int id) {
-        throw new UnsupportedOperationException();
-        // doit également supprimer toutes les arcs reliées au sommet id
-        // renvoie faux si id ne correspond à aucun sommet
+        if(successeurs.size()<id)
+            return false;
+        successeurs.remove(id-1);
+        for(ArrayList<Integer> liste : successeurs){
+            for(int i=0;i<liste.size();i++){
+                if(liste.get(i) == id)
+                    liste.remove(i);
+            }
+        }
+        return true;
     }
 
     public boolean addArc(Arc A) {
-        throw new UnsupportedOperationException();
+        if(successeurs.size() < A.depart || successeurs.size() < A.destination)
+            return false;
+        if(isOriente){
+            successeurs.get(A.depart-1).add(A.destination);
+        }else{
+            successeurs.get(A.depart-1).add(A.destination);
+            successeurs.get(A.destination-1).add(A.depart);
+        }
+        return true;
         // renvoie faux si le départ ou la destination de A ne correspondent pas à un sommet du graphe
     }
 
     public boolean removeArc(Arc A) {
-        throw new UnsupportedOperationException();
+        //pas entiermenet fini manque c=des return false
+        if(successeurs.size() < A.depart || successeurs.size() < A.destination)
+            return false;
+        boolean trouve=false;
+        if(isOriente){
+            for(int i=0;i<successeurs.get(A.depart-1).size();i++){
+                if(successeurs.get(A.depart-1).get(i) == A.destination){
+                    successeurs.get(A.depart-1).remove(i);        
+                    trouve=true;
+                }
+            }
+            if(!trouve)
+                return false;
+            
+        }else{
+            for(int i=0;i<successeurs.get(A.depart).size();i++){
+                if(successeurs.get(A.depart-1).get(i) == A.destination){
+                    successeurs.get(A.depart-1).remove(i);        
+                    trouve=true;
+                }
+            }
+           for(int i=0;i<successeurs.get(A.destination-1).size();i++){
+                if(successeurs.get(A.destination-1).get(i) == A.depart){
+                    trouve=true;
+                    successeurs.get(A.destinations).remove(i);        
+                }
+            }
+            if(!trouve)
+                return false;
+        }
+        return true;
         // renvoie faux si un arc equivalent à A n'est pas trouvé
     }
 
     public boolean changeSensArc(Arc A) {
-        throw new UnsupportedOperationException();
+        if(successeurs.size() < A.depart || successeurs.size() < A.destination || !isOriente())
+            return false;
+        for(int i=0;i<successeurs.get(A.depart-1).size();i++){
+            if(successeurs.get(A.depart-1).get(i)==A.destination){
+                trouve=true;
+                successeurs.get(A.depart-1).remove(i);
+            }
+        }
+        if(!trouve)
+            return false;
+        successeurs.get(A.destination-1).add(A.depart);
+        return true;
         // renvoie faux si un arc equivalent à A n'est pas trouvé
     }
+
 
     @Override
     public String toString() {
