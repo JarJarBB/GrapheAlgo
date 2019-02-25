@@ -8,6 +8,16 @@ public class Graphe {
     private ArrayList<String> informationsSommets; // On en aura besoin plus tard
     private boolean oriente;
 
+    public Graphe(boolean _oriente) {
+        successeurs = new ArrayList<ArrayList<Integer>>();
+        successeurs.add(null);
+        oriente = _oriente;
+    }
+
+    public Graphe() {
+        this(true);
+    }
+
     public Graphe(Graphe G) {
         successeurs = new ArrayList<ArrayList<Integer>>(G.successeurs.size());
         for (ArrayList<Integer> S : G.successeurs) {
@@ -61,7 +71,7 @@ public class Graphe {
     public Graphe(int[][] matriceAdjacente) {
         this(matriceAdjacente, true);
     }
-    
+
     public static ArrayList<Arc> MatriceVersListeArcs(int[][] MatriceAdjacence, boolean oriente) {
         ArrayList<Arc> aL = new ArrayList<Arc>();
         if (oriente) {
@@ -86,61 +96,50 @@ public class Graphe {
     }
 
     public int[] getFileSuccesseurs() {
-        int i=0;
-        for(ArrayList<Integer> liste:successeurs){
-            for(int entier:liste)
-                i++;
-            i++;
+        int tailleFs = successeurs.size();
+        for (ArrayList<Integer> listeSommet : successeurs) {
+            tailleFs += listeSommet.size();
         }
-        int[] fs=new int[i+1];
-        fs[0]=i;
-        i=1;
-        for(ArrayList<Integer> liste:successeurs){
-            for(int entier:liste){
-                fs[i]=entier
-                i++;
+        int[] fs = new int[tailleFs];
+        fs[0] = tailleFs - 1;
+
+        int i = 1;
+        for (int j = 1; j < successeurs.size(); j++) {
+            for (int sommet : successeurs.get(j)) {
+                fs[i++] = sommet;
             }
-            fs[i]=0;
-            i++;
+            fs[i++] = 0;
         }
 
         return fs;
     }
 
     public int[] getAdressesPremierSuccesseur() {
-        int i=0;
-        for(ArrayList<Integer> liste:successeurs)
-            i++;
-        int[] aps=new int[i+1];
-        aps[0]=i;
-        i=1;
-        int indice=1;
-        for(ArrayList<Integer> liste:successeurs){
-            aps[indice]=i;
-            indice++;
-            for(int entier:liste)
-                i++;
-            i++;
+        int tailleAps = successeurs.size();
+        int[] aps = new int[tailleAps];
+        aps[0] = tailleAps - 1;
+
+        int indiceFs = 1, idSommet = 1;
+        for (int j = 1; j < successeurs.size(); j++) {
+            aps[idSommet] = indiceFs;
+            indiceFs += successeurs.get(idSommet).size() + 1;
+            idSommet++;
         }
 
         return aps;
-
     }
 
     public int[][] getMatriceAdjacente() {
-        int[][] matrice =new int[successeurs.size()][successeurs.size()];
-
-        for (int i=0;i<successeurs.size() ;i++ ) {
-            for (int j=0;j<successeurs.size() ;j++ ) {
-                matrice[i][j]=0;
+        int[][] matrice = new int[successeurs.size()][successeurs.size()];
+        for (int depart = 1; depart < successeurs.size(); depart++) {
+            for (int i : successeurs.get(depart)) {
+                matrice[depart][i] = 1;
+                if (!oriente) {
+                    matrice[i][depart] = 1;
+                }
             }
         }
-        int depart=1;
-        for(ArrayList<Integer> liste : successeurs){
-            for(int i:liste)
-                matrice[depart][i]=1;
-            depart++;
-        }
+
         return matrice;
     }
 
@@ -150,82 +149,58 @@ public class Graphe {
 
     // Les parties suivantes sont nécessaires pour modifier dynamiquement le graphe :
     public void addSommet() {
-        successeurs.add(new ArrayList<Integer>);
+        successeurs.add(new ArrayList<Integer>());
     }
 
     public boolean removeSommet(int id) {
-        if(successeurs.size()<id)
+        if (id >= successeurs.size()) {
             return false;
-        successeurs.remove(id-1);
-        for(ArrayList<Integer> liste : successeurs){
-            for(int i=0;i<liste.size();i++){
-                if(liste.get(i) == id)
-                    liste.remove(i);
+        }
+        successeurs.remove(id);
+        for (int j = 1; j < successeurs.size(); j++) {
+            for (int i = 0; i < successeurs.get(j).size(); i++) {
+                if (successeurs.get(j).get(i) == id) {
+                    successeurs.get(j).remove(i);
+                }
             }
         }
+
         return true;
     }
 
     public boolean addArc(Arc A) {
-        if(successeurs.size() < A.depart || successeurs.size() < A.destination)
+        if (successeurs.size() <= A.depart || successeurs.size() <= A.destination) {
             return false;
-        if(isOriente){
-            successeurs.get(A.depart-1).add(A.destination);
-        }else{
-            successeurs.get(A.depart-1).add(A.destination);
-            successeurs.get(A.destination-1).add(A.depart);
         }
+        successeurs.get(A.depart).add(A.destination);
+
         return true;
         // renvoie faux si le départ ou la destination de A ne correspondent pas à un sommet du graphe
     }
 
     public boolean removeArc(Arc A) {
-        //pas entiermenet fini manque c=des return false
-        if(successeurs.size() < A.depart || successeurs.size() < A.destination)
+        if (successeurs.size() <= A.depart || successeurs.size() <= A.destination) {
             return false;
-        boolean trouve=false;
-        if(isOriente){
-            for(int i=0;i<successeurs.get(A.depart-1).size();i++){
-                if(successeurs.get(A.depart-1).get(i) == A.destination){
-                    successeurs.get(A.depart-1).remove(i);        
-                    trouve=true;
-                }
-            }
-            if(!trouve)
-                return false;
-            
-        }else{
-            for(int i=0;i<successeurs.get(A.depart).size();i++){
-                if(successeurs.get(A.depart-1).get(i) == A.destination){
-                    successeurs.get(A.depart-1).remove(i);        
-                    trouve=true;
-                }
-            }
-           for(int i=0;i<successeurs.get(A.destination-1).size();i++){
-                if(successeurs.get(A.destination-1).get(i) == A.depart){
-                    trouve=true;
-                    successeurs.get(A.destinations).remove(i);        
-                }
-            }
-            if(!trouve)
-                return false;
         }
-        return true;
+        if (oriente) {
+
+            return successeurs.get(A.depart).remove(new Integer(A.destination));
+        } else {
+            boolean b1 = successeurs.get(A.depart).remove(new Integer(A.destination));
+            boolean b2 = successeurs.get(A.destination).remove(new Integer(A.depart));
+
+            return b1 || b2;
+        }
         // renvoie faux si un arc equivalent à A n'est pas trouvé
     }
 
     public boolean changeSensArc(Arc A) {
-        if(successeurs.size() < A.depart || successeurs.size() < A.destination || !isOriente())
+        if (successeurs.size() <= A.depart || successeurs.size() <= A.destination || !oriente) {
             return false;
-        for(int i=0;i<successeurs.get(A.depart-1).size();i++){
-            if(successeurs.get(A.depart-1).get(i)==A.destination){
-                trouve=true;
-                successeurs.get(A.depart-1).remove(i);
-            }
         }
-        if(!trouve)
-            return false;
-        successeurs.get(A.destination-1).add(A.depart);
+        successeurs.get(A.depart).remove(new Integer(A.destination));
+        successeurs.get(A.destination).add(new Integer(A.depart));
+
         return true;
         // renvoie faux si un arc equivalent à A n'est pas trouvé
     }
@@ -244,6 +219,7 @@ public class Graphe {
                 sb.append(I).append(" ");
             }
         }
+
         return sb.toString();
     }
 
