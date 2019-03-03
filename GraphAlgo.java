@@ -6,14 +6,15 @@ import java.util.Arrays;
 public class GraphAlgo {
 
     public static void main(String[] args) {
-        testChangeSensArc();
+        testRemoveSommet();
+        new UIGrapheAlgo();
     }
 
-    public static void testArc() {
+    public static void testLien() {
         int dep = 1, arr = 2;
-        Arc a = new Arc(dep, arr);
+        Lien a = new Lien(dep, arr);
         System.out.println(a);
-        Arc b = new Arc(dep, arr);
+        Lien b = new Lien(dep, arr);
         System.out.println(a.equals(b));
     }
 
@@ -23,20 +24,20 @@ public class GraphAlgo {
     }
 
     public static void testConstruteurListe() {
-        ArrayList<Arc> aL = new ArrayList<Arc>(3);
-        aL.add(new Arc(1, 2));
-        aL.add(new Arc(1, 3));
-        aL.add(new Arc(2, 4));
+        ArrayList<Lien> aL = new ArrayList<Lien>(3);
+        aL.add(new Lien(1, 2));
+        aL.add(new Lien(1, 3));
+        aL.add(new Lien(2, 4));
 
         Graphe G = new Graphe(4, aL);
         System.out.println(G);
     }
 
     public static void testConstruteurParRecopie() {
-        ArrayList<Arc> aL = new ArrayList<Arc>(3);
-        aL.add(new Arc(1, 2));
-        aL.add(new Arc(1, 3));
-        aL.add(new Arc(2, 4));
+        ArrayList<Lien> aL = new ArrayList<Lien>(3);
+        aL.add(new Lien(1, 2));
+        aL.add(new Lien(1, 3));
+        aL.add(new Lien(2, 4));
 
         Graphe G1 = new Graphe(4, aL);
         Graphe G2 = new Graphe(G1);
@@ -71,10 +72,10 @@ public class GraphAlgo {
     }
 
     public static void testGetFileSuccesseurs() {
-        ArrayList<Arc> aL = new ArrayList<Arc>(3);
-        aL.add(new Arc(1, 2));
-        aL.add(new Arc(1, 3));
-        aL.add(new Arc(2, 4));
+        ArrayList<Lien> aL = new ArrayList<Lien>(3);
+        aL.add(new Lien(1, 2));
+        aL.add(new Lien(1, 3));
+        aL.add(new Lien(2, 4));
 
         Graphe G = new Graphe(4, aL);
         System.out.println(G);
@@ -85,10 +86,10 @@ public class GraphAlgo {
     }
 
     public static void testGetAdressesPremierSuccesseur() {
-        ArrayList<Arc> aL = new ArrayList<Arc>(3);
-        aL.add(new Arc(1, 2));
-        aL.add(new Arc(1, 3));
-        aL.add(new Arc(2, 4));
+        ArrayList<Lien> aL = new ArrayList<Lien>(3);
+        aL.add(new Lien(1, 2));
+        aL.add(new Lien(1, 3));
+        aL.add(new Lien(2, 4));
 
         Graphe G = new Graphe(4, aL);
         System.out.println(G);
@@ -105,10 +106,10 @@ public class GraphAlgo {
     }
 
     public static void testGetMatriceAdjacente() {
-        ArrayList<Arc> aL = new ArrayList<Arc>(3);
-        aL.add(new Arc(1, 2));
-        aL.add(new Arc(1, 3));
-        aL.add(new Arc(2, 4));
+        ArrayList<Lien> aL = new ArrayList<Lien>(3);
+        aL.add(new Lien(1, 2));
+        aL.add(new Lien(1, 3));
+        aL.add(new Lien(2, 4));
 
         Graphe G = new Graphe(4, aL);
         System.out.println(G);
@@ -125,52 +126,54 @@ public class GraphAlgo {
     }
 
     public static void testRemoveSommet() {
-        ArrayList<Arc> aL = new ArrayList<Arc>(3);
-        aL.add(new Arc(1, 2));
-        aL.add(new Arc(1, 3));
-        aL.add(new Arc(2, 4));
+        ArrayList<Lien> aL = new ArrayList<Lien>(3);
+        aL.add(new Lien(1, 2));
+        aL.add(new Lien(1, 3));
+        aL.add(new Lien(2, 4));
+        aL.add(new Lien(3, 4));
+        aL.add(new Lien(4, 1));
 
         Graphe G = new Graphe(4, aL);
         System.out.println(G);
-        G.removeSommet(1);
+        G.removeSommet(3);
         System.out.println(G);
     }
 
-    public static void testAddArc() {
-        ArrayList<Arc> aL = new ArrayList<Arc>(3);
-        aL.add(new Arc(1, 2));
-        aL.add(new Arc(1, 3));
-        aL.add(new Arc(2, 4));
+    public static void testAddLien() {
+        ArrayList<Lien> aL = new ArrayList<Lien>(3);
+        aL.add(new Lien(1, 2));
+        aL.add(new Lien(1, 3));
+        aL.add(new Lien(2, 4));
 
         Graphe G = new Graphe(4, aL);
         System.out.println(G);
-        G.addArc(new Arc(3, 4));
+        G.addLien(new Lien(3, 4));
         System.out.println(G);
     }
 
-    public static void testRemoveArc() {
-        ArrayList<Arc> aL = new ArrayList<Arc>(3);
-        aL.add(new Arc(1, 2));
-        aL.add(new Arc(1, 3));
-        aL.add(new Arc(2, 4));
-        aL.add(new Arc(3, 4));
+    public static void testRemoveLien() {
+        ArrayList<Lien> aL = new ArrayList<Lien>(3);
+        aL.add(new Lien(1, 2));
+        aL.add(new Lien(1, 3));
+        aL.add(new Lien(2, 4));
+        aL.add(new Lien(3, 4));
 
         Graphe G = new Graphe(4, aL);
         System.out.println(G);
-        G.removeArc(new Arc(2, 4));
+        G.removeLien(new Lien(2, 4));
         System.out.println(G);
     }
 
-    public static void testChangeSensArc() {
-        ArrayList<Arc> aL = new ArrayList<Arc>(3);
-        aL.add(new Arc(1, 2));
-        aL.add(new Arc(1, 3));
-        aL.add(new Arc(2, 4));
-        aL.add(new Arc(3, 4));
+    public static void testChangeSensLien() {
+        ArrayList<Lien> aL = new ArrayList<Lien>(3);
+        aL.add(new Lien(1, 2));
+        aL.add(new Lien(1, 3));
+        aL.add(new Lien(2, 4));
+        aL.add(new Lien(3, 4));
 
         Graphe G = new Graphe(4, aL);
         System.out.println(G);
-        G.changeSensArc(new Arc(2, 4));
+        G.changeSensLien(new Lien(2, 4));
         System.out.println(G);
     }
 

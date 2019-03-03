@@ -7,7 +7,7 @@ public class Graphe {
     private ArrayList<ArrayList<Integer>> successeurs;
     private ArrayList<String> informationsSommets; // On en aura besoin plus tard
     private boolean oriente;
-
+    
     public Graphe(boolean _oriente) {
         successeurs = new ArrayList<ArrayList<Integer>>();
         successeurs.add(null);
@@ -26,24 +26,24 @@ public class Graphe {
         oriente = G.oriente;
     }
 
-    public Graphe(int nbSommets, ArrayList<Arc> arcs, boolean _oriente) {
+    public Graphe(int nbSommets, ArrayList<Lien> liens, boolean _oriente) {
         oriente = _oriente;
         successeurs = new ArrayList<ArrayList<Integer>>(nbSommets + 1);
         int[] taillesSuccesseurs = new int[nbSommets + 1];
-        for (Arc a : arcs) {
+        for (Lien a : liens) {
             taillesSuccesseurs[a.depart]++;
         }
         taillesSuccesseurs[0] = 0;
         for (int i : taillesSuccesseurs) {
             successeurs.add(new ArrayList<Integer>(i));
         }
-        for (Arc a : arcs) {
+        for (Lien a : liens) {
             successeurs.get(a.depart).add(a.destination);
         }
     }
 
-    public Graphe(int nbSommets, ArrayList<Arc> arcs) {
-        this(nbSommets, arcs, true);
+    public Graphe(int nbSommets, ArrayList<Lien> liens) {
+        this(nbSommets, liens, true);
     }
 
     public Graphe(int[] fileSuccesseurs, boolean _oriente) {
@@ -65,20 +65,20 @@ public class Graphe {
     }
 
     public Graphe(int[][] matriceAdjacente, boolean oriente) {
-        this(matriceAdjacente.length - 1, MatriceVersListeArcs(matriceAdjacente, oriente), oriente);
+        this(matriceAdjacente.length - 1, MatriceVersListeLiens(matriceAdjacente, oriente), oriente);
     }
 
     public Graphe(int[][] matriceAdjacente) {
         this(matriceAdjacente, true);
     }
 
-    public static ArrayList<Arc> MatriceVersListeArcs(int[][] MatriceAdjacence, boolean oriente) {
-        ArrayList<Arc> aL = new ArrayList<Arc>();
+    public static ArrayList<Lien> MatriceVersListeLiens(int[][] MatriceAdjacence, boolean oriente) {
+        ArrayList<Lien> aL = new ArrayList<Lien>();
         if (oriente) {
             for (int i = 1; i < MatriceAdjacence.length; i++) {
                 for (int j = 1; j < MatriceAdjacence[i].length; j++) {
                     if (MatriceAdjacence[i][j] != 0) {
-                        aL.add(new Arc(i, j));
+                        aL.add(new Lien(i, j));
                     }
                 }
             }
@@ -86,7 +86,7 @@ public class Graphe {
             for (int i = 1; i < MatriceAdjacence.length; i++) {
                 for (int j = 1; j <= i; j++) {
                     if (MatriceAdjacence[i][j] != 0) {
-                        aL.add(new Arc(i, j));
+                        aL.add(new Lien(i, j));
                     }
                 }
             }
@@ -159,8 +159,12 @@ public class Graphe {
         successeurs.remove(id);
         for (int j = 1; j < successeurs.size(); j++) {
             for (int i = 0; i < successeurs.get(j).size(); i++) {
-                if (successeurs.get(j).get(i) == id) {
-                    successeurs.get(j).remove(i);
+                if (successeurs.get(j).get(i) >= id) {
+                    if (successeurs.get(j).get(i) == id) {
+                        successeurs.get(j).remove(i);
+                    } else {
+                        successeurs.get(j).set(i, successeurs.get(j).get(i) - 1);
+                    }
                 }
             }
         }
@@ -168,7 +172,7 @@ public class Graphe {
         return true;
     }
 
-    public boolean addArc(Arc A) {
+    public boolean addLien(Lien A) {
         if (successeurs.size() <= A.depart || successeurs.size() <= A.destination) {
             return false;
         }
@@ -178,7 +182,7 @@ public class Graphe {
         // renvoie faux si le départ ou la destination de A ne correspondent pas à un sommet du graphe
     }
 
-    public boolean removeArc(Arc A) {
+    public boolean removeLien(Lien A) {
         if (successeurs.size() <= A.depart || successeurs.size() <= A.destination) {
             return false;
         }
@@ -191,10 +195,10 @@ public class Graphe {
 
             return b1 || b2;
         }
-        // renvoie faux si un arc equivalent à A n'est pas trouvé
+        // renvoie faux si un lien equivalent à A n'est pas trouvé
     }
 
-    public boolean changeSensArc(Arc A) {
+    public boolean changeSensLien(Lien A) {
         if (successeurs.size() <= A.depart || successeurs.size() <= A.destination || !oriente) {
             return false;
         }
@@ -202,7 +206,7 @@ public class Graphe {
         successeurs.get(A.destination).add(new Integer(A.depart));
 
         return true;
-        // renvoie faux si un arc equivalent à A n'est pas trouvé
+        // renvoie faux si un lien equivalent à A n'est pas trouvé
     }
 
     @Override
