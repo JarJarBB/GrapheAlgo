@@ -6,7 +6,6 @@ import java.util.Arrays;
 public class GraphAlgo {
 
     public static void main(String[] args) {
-        testRemoveSommet();
         new UIGrapheAlgo();
     }
 
@@ -18,33 +17,36 @@ public class GraphAlgo {
         System.out.println(a.equals(b));
     }
 
-    public static void testConstruteurParDefaut() {
+    public static void testConstructeurParDefautAvecPoids() {
         Graphe G = new Graphe();
         System.out.println(G);
     }
 
-    public static void testConstruteurListe() {
+    public static void testConstructeurListeAvecPoids() {
         ArrayList<Lien> aL = new ArrayList<Lien>(3);
         aL.add(new Lien(1, 2));
         aL.add(new Lien(1, 3));
-        aL.add(new Lien(2, 4));
+        aL.add(new Lien(2, 4, 3.14159));
 
         Graphe G = new Graphe(4, aL);
         System.out.println(G);
+        System.out.println(G.getPoids(new Lien(2, 4)));
     }
 
-    public static void testConstruteurParRecopie() {
+    public static void testConstructeurParRecopieAvecPoids() {
         ArrayList<Lien> aL = new ArrayList<Lien>(3);
         aL.add(new Lien(1, 2));
         aL.add(new Lien(1, 3));
-        aL.add(new Lien(2, 4));
+        aL.add(new Lien(2, 4, 2.718));
 
-        Graphe G1 = new Graphe(4, aL);
+        Graphe G1 = new Graphe(4, aL, false);
+        G1.setPoids(new Lien(2, 1, 1.41));
         Graphe G2 = new Graphe(G1);
         System.out.println(G2);
+        System.out.println(G2.getPoids(1, 2));
     }
 
-    public static void testConstruteurFileSuccesseurs() {
+    public static void testConstructeurFileSuccesseursAvecPoids() {
         int[] fs = new int[8];
         fs[0] = 7;
         fs[1] = 2;
@@ -56,9 +58,10 @@ public class GraphAlgo {
         fs[7] = 0;
         Graphe G = new Graphe(fs);
         System.out.println(G);
+        System.out.println(G.getPoids(1,3));
     }
 
-    public static void testConstruteurMatriceAdjacente() {
+    public static void testConstructeurMatriceAdjacenteAvecPoids() {
         int[][] M = new int[5][5];
         M[1][2] = 1;
         M[2][1] = 1;
@@ -67,8 +70,9 @@ public class GraphAlgo {
         M[2][4] = 1;
         M[4][2] = 1;
 
-        Graphe G = new Graphe(M, false);
+        Graphe G = new Graphe(M);
         System.out.println(G);
+        System.out.println(G.getPoids(1, 3));
     }
 
     public static void testGetFileSuccesseurs() {
@@ -118,28 +122,31 @@ public class GraphAlgo {
         }
     }
 
-    public static void testAddSommet() {
+    public static void testAddSommetAvecPoids() {
         Graphe G = new Graphe();
         System.out.println(G);
         G.addSommet();
         System.out.println(G);
+        System.out.println(G.getPoids(new Lien(1,1)));
     }
 
-    public static void testRemoveSommet() {
+    public static void testRemoveSommetAvecPoids() {
         ArrayList<Lien> aL = new ArrayList<Lien>(3);
         aL.add(new Lien(1, 2));
         aL.add(new Lien(1, 3));
         aL.add(new Lien(2, 4));
         aL.add(new Lien(3, 4));
-        aL.add(new Lien(4, 1));
+        aL.add(new Lien(4, 1, -2.3));
 
         Graphe G = new Graphe(4, aL);
         System.out.println(G);
+        System.out.println(G.getPoids(4, 1));
         G.removeSommet(3);
         System.out.println(G);
+        System.out.println(G.getPoids(3, 1));
     }
 
-    public static void testAddLien() {
+    public static void testAddLienAvecPoids() {
         ArrayList<Lien> aL = new ArrayList<Lien>(3);
         aL.add(new Lien(1, 2));
         aL.add(new Lien(1, 3));
@@ -147,21 +154,25 @@ public class GraphAlgo {
 
         Graphe G = new Graphe(4, aL);
         System.out.println(G);
-        G.addLien(new Lien(3, 4));
+        G.addLien(new Lien(3, 4, 4.5));
         System.out.println(G);
+        System.out.println(G.getPoids(3, 4));
     }
 
-    public static void testRemoveLien() {
+    public static void testRemoveLienAvecPoids() {
         ArrayList<Lien> aL = new ArrayList<Lien>(3);
         aL.add(new Lien(1, 2));
         aL.add(new Lien(1, 3));
-        aL.add(new Lien(2, 4));
+        aL.add(new Lien(2, 4, 3.14159));
         aL.add(new Lien(3, 4));
 
-        Graphe G = new Graphe(4, aL);
+        Graphe G = new Graphe(4, aL, false);
+        G.addLien(new Lien(4, 2, 2.718));
         System.out.println(G);
+        System.out.println(G.getPoids(4, 2));
         G.removeLien(new Lien(2, 4));
         System.out.println(G);
+        System.out.println(G.getPoids(4, 2));
     }
 
     public static void testChangeSensLien() {

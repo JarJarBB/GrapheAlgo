@@ -3,12 +3,12 @@ package graphealgo;
 public class Lien {
 
     public final int depart, destination;
-    public final double valeur;
+    public final double poids;
 
-    public Lien(int _depart, int _destination, double _valeur) {
+    public Lien(int _depart, int _destination, double _poids) {
         depart = _depart;
         destination = _destination;
-        valeur = _valeur;
+        poids = _poids;
     }
     
     public Lien(int _depart, int _destination) {
