@@ -10,7 +10,7 @@ public class Lien {
         destination = _destination;
         poids = _poids;
     }
-    
+
     public Lien(int _depart, int _destination) {
         this(_depart, _destination, 1.0);
     }

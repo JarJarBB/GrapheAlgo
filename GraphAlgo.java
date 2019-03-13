@@ -23,7 +23,7 @@ public class GraphAlgo {
     }
 
     public static void testConstructeurListeAvecPoids() {
-        ArrayList<Lien> aL = new ArrayList<Lien>(3);
+        ArrayList<Lien> aL = new ArrayList<>(3);
         aL.add(new Lien(1, 2));
         aL.add(new Lien(1, 3));
         aL.add(new Lien(2, 4, 3.14159));
@@ -34,7 +34,7 @@ public class GraphAlgo {
     }
 
     public static void testConstructeurParRecopieAvecPoids() {
-        ArrayList<Lien> aL = new ArrayList<Lien>(3);
+        ArrayList<Lien> aL = new ArrayList<>(3);
         aL.add(new Lien(1, 2));
         aL.add(new Lien(1, 3));
         aL.add(new Lien(2, 4, 2.718));
@@ -58,7 +58,7 @@ public class GraphAlgo {
         fs[7] = 0;
         Graphe G = new Graphe(fs);
         System.out.println(G);
-        System.out.println(G.getPoids(1,3));
+        System.out.println(G.getPoids(1, 3));
     }
 
     public static void testConstructeurMatriceAdjacenteAvecPoids() {
@@ -76,7 +76,7 @@ public class GraphAlgo {
     }
 
     public static void testGetFileSuccesseurs() {
-        ArrayList<Lien> aL = new ArrayList<Lien>(3);
+        ArrayList<Lien> aL = new ArrayList<>(3);
         aL.add(new Lien(1, 2));
         aL.add(new Lien(1, 3));
         aL.add(new Lien(2, 4));
@@ -90,7 +90,7 @@ public class GraphAlgo {
     }
 
     public static void testGetAdressesPremierSuccesseur() {
-        ArrayList<Lien> aL = new ArrayList<Lien>(3);
+        ArrayList<Lien> aL = new ArrayList<>(3);
         aL.add(new Lien(1, 2));
         aL.add(new Lien(1, 3));
         aL.add(new Lien(2, 4));
@@ -110,7 +110,7 @@ public class GraphAlgo {
     }
 
     public static void testGetMatriceAdjacente() {
-        ArrayList<Lien> aL = new ArrayList<Lien>(3);
+        ArrayList<Lien> aL = new ArrayList<>(3);
         aL.add(new Lien(1, 2));
         aL.add(new Lien(1, 3));
         aL.add(new Lien(2, 4));
@@ -127,11 +127,11 @@ public class GraphAlgo {
         System.out.println(G);
         G.addSommet();
         System.out.println(G);
-        System.out.println(G.getPoids(new Lien(1,1)));
+        System.out.println(G.getPoids(new Lien(1, 1)));
     }
 
     public static void testRemoveSommetAvecPoids() {
-        ArrayList<Lien> aL = new ArrayList<Lien>(3);
+        ArrayList<Lien> aL = new ArrayList<>(3);
         aL.add(new Lien(1, 2));
         aL.add(new Lien(1, 3));
         aL.add(new Lien(2, 4));
@@ -147,7 +147,7 @@ public class GraphAlgo {
     }
 
     public static void testAddLienAvecPoids() {
-        ArrayList<Lien> aL = new ArrayList<Lien>(3);
+        ArrayList<Lien> aL = new ArrayList<>(3);
         aL.add(new Lien(1, 2));
         aL.add(new Lien(1, 3));
         aL.add(new Lien(2, 4));
@@ -160,7 +160,7 @@ public class GraphAlgo {
     }
 
     public static void testRemoveLienAvecPoids() {
-        ArrayList<Lien> aL = new ArrayList<Lien>(3);
+        ArrayList<Lien> aL = new ArrayList<>(3);
         aL.add(new Lien(1, 2));
         aL.add(new Lien(1, 3));
         aL.add(new Lien(2, 4, 3.14159));
@@ -175,17 +175,19 @@ public class GraphAlgo {
         System.out.println(G.getPoids(4, 2));
     }
 
-    public static void testChangeSensLien() {
-        ArrayList<Lien> aL = new ArrayList<Lien>(3);
-        aL.add(new Lien(1, 2));
+    public static void testChangeSensLienAvecPoids() {
+        ArrayList<Lien> aL = new ArrayList<>(3);
+        aL.add(new Lien(1, 2, 2.718));
         aL.add(new Lien(1, 3));
         aL.add(new Lien(2, 4));
         aL.add(new Lien(3, 4));
 
         Graphe G = new Graphe(4, aL);
         System.out.println(G);
-        G.changeSensLien(new Lien(2, 4));
+        System.out.println(G.getPoids(1, 2));
+        G.changeSensLien(new Lien(1, 2));
         System.out.println(G);
+        System.out.println(G.getPoids(2, 1));
     }
 
 }

@@ -9,7 +9,7 @@ public class Graphe {
     private ArrayList<ArrayList<Double>> poidsLiens;
     private ArrayList<String> informationsSommets; // On en aura besoin plus tard
     private boolean oriente;
-    
+
     public Graphe(boolean _oriente) {
         successeurs = new ArrayList<>();
         successeurs.add(null);
@@ -69,7 +69,7 @@ public class Graphe {
             successeurs.add(liste);
             poidsLiens.add(poids);
         }
-        
+
     }
 
     public Graphe(int[] fileSuccesseurs) {
@@ -158,7 +158,7 @@ public class Graphe {
     public boolean isOriente() {
         return oriente;
     }
-    
+
     public double getPoids(int depart, int destination) {
         double valeurSiNonPresent = 1.1;
         int index = successeurs.get(depart).indexOf(destination);
@@ -170,17 +170,18 @@ public class Graphe {
                 } else {
                     return poidsLiens.get(destination).get(index);
                 }
+            } else {
+                return valeurSiNonPresent;
             }
-            else return valeurSiNonPresent;
         } else {
             return poidsLiens.get(depart).get(index);
         }
     }
-    
+
     public double getPoids(Lien L) {
         return getPoids(L.depart, L.destination);
     }
-    
+
     public boolean setPoids(Lien L) {
         int index = successeurs.get(L.depart).indexOf(L.destination);
         if (index == -1) {
@@ -192,8 +193,9 @@ public class Graphe {
                     poidsLiens.get(L.destination).set(index, L.poids);
                     return true;
                 }
+            } else {
+                return false;
             }
-            else return false;
         } else {
             poidsLiens.get(L.depart).set(index, L.poids);
             return true;
@@ -243,7 +245,7 @@ public class Graphe {
         if (successeurs.size() <= L.depart || successeurs.size() <= L.destination) {
             return false;
         }
-        
+
         int index = successeurs.get(L.depart).indexOf(L.destination);
         boolean b1 = index != -1, b2 = false;
         if (b1) {
@@ -258,15 +260,21 @@ public class Graphe {
                 poidsLiens.get(L.destination).remove(index);
             }
         }
-        
+
         return b1 || b2;  // renvoie faux si un lien equivalent à L n'est pas trouvé
     }
 
     public boolean changeSensLien(Lien A) {
         if (successeurs.size() <= A.depart || successeurs.size() <= A.destination || !oriente) {
             return false;
-        } else if (successeurs.get(A.depart).remove(new Integer(A.destination))) {
+        }
+        int index = successeurs.get(A.depart).indexOf(A.destination);
+        if (index != -1) {
+            successeurs.get(A.depart).remove(index);
+            double poids = poidsLiens.get(A.depart).remove(index);
             successeurs.get(A.destination).add(A.depart);
+            poidsLiens.get(A.destination).add(poids);
+
             return true;
         } else {
             return false;
