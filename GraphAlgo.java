@@ -17,12 +17,12 @@ public class GraphAlgo {
         System.out.println(a.equals(b));
     }
 
-    public static void testConstructeurParDefautAvecPoids() {
+    public static void testConstructeurParDefaut() {
         Graphe G = new Graphe();
         System.out.println(G);
     }
 
-    public static void testConstructeurListeAvecPoids() {
+    public static void testConstructeurListe() {
         ArrayList<Lien> aL = new ArrayList<>(3);
         aL.add(new Lien(1, 2));
         aL.add(new Lien(1, 3));
@@ -31,9 +31,11 @@ public class GraphAlgo {
         Graphe G = new Graphe(4, aL);
         System.out.println(G);
         System.out.println(G.getPoids(new Lien(2, 4)));
+        System.out.println("a" + G.getInformation(2) + "z");
+
     }
 
-    public static void testConstructeurParRecopieAvecPoids() {
+    public static void testConstructeurParRecopie() {
         ArrayList<Lien> aL = new ArrayList<>(3);
         aL.add(new Lien(1, 2));
         aL.add(new Lien(1, 3));
@@ -44,9 +46,10 @@ public class GraphAlgo {
         Graphe G2 = new Graphe(G1);
         System.out.println(G2);
         System.out.println(G2.getPoids(1, 2));
+        System.out.println("a" + G2.getInformation(2) + "z");
     }
 
-    public static void testConstructeurFileSuccesseursAvecPoids() {
+    public static void testConstructeurFileSuccesseurs() {
         int[] fs = new int[8];
         fs[0] = 7;
         fs[1] = 2;
@@ -59,9 +62,10 @@ public class GraphAlgo {
         Graphe G = new Graphe(fs);
         System.out.println(G);
         System.out.println(G.getPoids(1, 3));
+        System.out.println("a" + G.getInformation(2) + "z");
     }
 
-    public static void testConstructeurMatriceAdjacenteAvecPoids() {
+    public static void testConstructeurMatriceAdjacente() {
         int[][] M = new int[5][5];
         M[1][2] = 1;
         M[2][1] = 1;
@@ -73,6 +77,8 @@ public class GraphAlgo {
         Graphe G = new Graphe(M);
         System.out.println(G);
         System.out.println(G.getPoids(1, 3));
+        G.setInformation(2, "exemple de num deux");
+        System.out.println("a" + G.getInformation(2) + "z");
     }
 
     public static void testGetFileSuccesseurs() {
@@ -122,15 +128,16 @@ public class GraphAlgo {
         }
     }
 
-    public static void testAddSommetAvecPoids() {
+    public static void testAddSommet() {
         Graphe G = new Graphe();
         System.out.println(G);
-        G.addSommet();
+        G.addSommet("Premier sommet ajoute");
         System.out.println(G);
         System.out.println(G.getPoids(new Lien(1, 1)));
+        System.out.println(G.getInformation(1));
     }
 
-    public static void testRemoveSommetAvecPoids() {
+    public static void testRemoveSommet() {
         ArrayList<Lien> aL = new ArrayList<>(3);
         aL.add(new Lien(1, 2));
         aL.add(new Lien(1, 3));
@@ -139,14 +146,17 @@ public class GraphAlgo {
         aL.add(new Lien(4, 1, -2.3));
 
         Graphe G = new Graphe(4, aL);
+        G.setInformation(3, "Nom du Trois");
         System.out.println(G);
         System.out.println(G.getPoids(4, 1));
+        System.out.println("a" + G.getInformation(3) + "z");
         G.removeSommet(3);
         System.out.println(G);
         System.out.println(G.getPoids(3, 1));
+        System.out.println("a" + G.getInformation(3) + "z");
     }
 
-    public static void testAddLienAvecPoids() {
+    public static void testAddLien() {
         ArrayList<Lien> aL = new ArrayList<>(3);
         aL.add(new Lien(1, 2));
         aL.add(new Lien(1, 3));
@@ -159,7 +169,7 @@ public class GraphAlgo {
         System.out.println(G.getPoids(3, 4));
     }
 
-    public static void testRemoveLienAvecPoids() {
+    public static void testRemoveLien() {
         ArrayList<Lien> aL = new ArrayList<>(3);
         aL.add(new Lien(1, 2));
         aL.add(new Lien(1, 3));
@@ -175,7 +185,7 @@ public class GraphAlgo {
         System.out.println(G.getPoids(4, 2));
     }
 
-    public static void testChangeSensLienAvecPoids() {
+    public static void testChangeSensLien() {
         ArrayList<Lien> aL = new ArrayList<>(3);
         aL.add(new Lien(1, 2, 2.718));
         aL.add(new Lien(1, 3));

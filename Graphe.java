@@ -7,7 +7,7 @@ public class Graphe {
 
     private ArrayList<ArrayList<Integer>> successeurs;
     private ArrayList<ArrayList<Double>> poidsLiens;
-    private ArrayList<String> informationsSommets; // On en aura besoin plus tard
+    private ArrayList<String> informationsSommets;
     private boolean oriente;
 
     public Graphe(boolean _oriente) {
@@ -15,6 +15,8 @@ public class Graphe {
         successeurs.add(null);
         poidsLiens = new ArrayList<>();
         poidsLiens.add(null);
+        informationsSommets = new ArrayList<>();
+        informationsSommets.add(null);
         oriente = _oriente;
     }
 
@@ -31,6 +33,7 @@ public class Graphe {
         for (ArrayList<Double> P : G.poidsLiens) {
             poidsLiens.add((ArrayList<Double>) P.clone());
         }
+        informationsSommets = (ArrayList<String>) G.informationsSommets.clone();
         oriente = G.oriente;
     }
 
@@ -38,6 +41,7 @@ public class Graphe {
         oriente = _oriente;
         successeurs = new ArrayList<>(nbSommets + 1);
         poidsLiens = new ArrayList<>(nbSommets + 1);
+        informationsSommets = new ArrayList<>(Collections.nCopies(nbSommets + 1, ""));
         int[] taillesSuccesseurs = new int[nbSommets + 1];
         for (Lien a : liens) {
             taillesSuccesseurs[a.depart]++;
@@ -69,6 +73,7 @@ public class Graphe {
             successeurs.add(liste);
             poidsLiens.add(poids);
         }
+        informationsSommets = new ArrayList<>(Collections.nCopies(successeurs.size(), ""));
 
     }
 
@@ -182,6 +187,14 @@ public class Graphe {
         return getPoids(L.depart, L.destination);
     }
 
+    public String getInformation(int id) {
+        return informationsSommets.get(id);
+    }
+
+    public void setInformation(int id, String info) {
+        informationsSommets.set(id, info);
+    }
+
     public boolean setPoids(Lien L) {
         int index = successeurs.get(L.depart).indexOf(L.destination);
         if (index == -1) {
@@ -202,10 +215,15 @@ public class Graphe {
         }
     }
 
-    // Les parties suivantes sont nécessaires pour modifier dynamiquement le graphe :
-    public void addSommet() {
+    // Les parties suivantes sont necessaires pour modifier dynamiquement le graphe :
+    public void addSommet(String info) {
         successeurs.add(new ArrayList<>());
         poidsLiens.add(new ArrayList<>());
+        informationsSommets.add(info);
+    }
+
+    public void addSommet() {
+        addSommet("");
     }
 
     public boolean removeSommet(int id) {
@@ -214,6 +232,7 @@ public class Graphe {
         }
         successeurs.remove(id);
         poidsLiens.remove(id);
+        informationsSommets.remove(id);
         for (int j = 1; j < successeurs.size(); j++) {
             for (int i = 0; i < successeurs.get(j).size(); i++) {
                 if (successeurs.get(j).get(i) >= id) {
@@ -238,14 +257,13 @@ public class Graphe {
         poidsLiens.get(L.depart).add(L.poids);
 
         return true;
-        // renvoie faux si le départ ou la destination de L ne correspondent pas à un sommet du graphe
+        // renvoie faux si le depart ou la destination de L ne correspondent pas a un sommet du graphe
     }
 
     public boolean removeLien(Lien L) {
         if (successeurs.size() <= L.depart || successeurs.size() <= L.destination) {
             return false;
         }
-
         int index = successeurs.get(L.depart).indexOf(L.destination);
         boolean b1 = index != -1, b2 = false;
         if (b1) {
@@ -261,25 +279,25 @@ public class Graphe {
             }
         }
 
-        return b1 || b2;  // renvoie faux si un lien equivalent à L n'est pas trouvé
+        return b1 || b2;  // renvoie faux si un lien equivalent a L n'est pas trouve
     }
 
-    public boolean changeSensLien(Lien A) {
-        if (successeurs.size() <= A.depart || successeurs.size() <= A.destination || !oriente) {
+    public boolean changeSensLien(Lien L) {
+        if (successeurs.size() <= L.depart || successeurs.size() <= L.destination || !oriente) {
             return false;
         }
-        int index = successeurs.get(A.depart).indexOf(A.destination);
+        int index = successeurs.get(L.depart).indexOf(L.destination);
         if (index != -1) {
-            successeurs.get(A.depart).remove(index);
-            double poids = poidsLiens.get(A.depart).remove(index);
-            successeurs.get(A.destination).add(A.depart);
-            poidsLiens.get(A.destination).add(poids);
+            successeurs.get(L.depart).remove(index);
+            double poids = poidsLiens.get(L.depart).remove(index);
+            successeurs.get(L.destination).add(L.depart);
+            poidsLiens.get(L.destination).add(poids);
 
             return true;
         } else {
             return false;
         }
-        // renvoie faux si un lien equivalent à A n'est pas trouvé
+        // renvoie faux si un lien equivalent a L n'est pas trouve
     }
 
     @Override
