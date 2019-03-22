@@ -70,6 +70,7 @@ public class UIGrapheAlgo extends JFrame {
             }
         };
         boutonAjoutLien.addActionListener(actionAjoutLien);
+
     }
 
     private void miseEnPlaceUI() {
@@ -77,5 +78,4 @@ public class UIGrapheAlgo extends JFrame {
         pack();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
-
 }

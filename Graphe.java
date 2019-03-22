@@ -112,6 +112,10 @@ public class Graphe {
         return aL;
     }
 
+    public int getNombreSommets() {
+        return successeurs.size() - 1;
+    }
+
     public int[] getFileSuccesseurs() {
         int tailleFs = successeurs.size();
         for (ArrayList<Integer> listeSommet : successeurs) {

@@ -6,7 +6,26 @@ import java.util.Arrays;
 public class GraphAlgo {
 
     public static void main(String[] args) {
-        new UIGrapheAlgo();
+        testDistancesUnSommet();
+        //new UIGrapheAlgo();
+    }
+
+    public static void testDistancesUnSommet() {
+
+        ArrayList<Lien> aL = new ArrayList<>(3);
+        aL.add(new Lien(1, 2));
+        aL.add(new Lien(1, 3));
+        aL.add(new Lien(2, 4, 3.14159));
+
+        Graphe G = new Graphe(4, aL);
+        System.out.println(G);
+
+        int[] distances = Algorithme.distancesUnSommet(G, 1);
+        int[] fs = G.getFileSuccesseurs();
+        int[] aps = G.getAdressesPremierSuccesseur();
+        for (int i = 0; i < distances.length; ++i) {
+            System.out.println(i + ":" + distances[i]);
+        }
     }
 
     public static void testLien() {
