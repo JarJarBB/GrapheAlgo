@@ -169,7 +169,7 @@ public class Graphe {
     }
 
     public double getPoids(int depart, int destination) {
-        double valeurSiNonPresent = 1.1;
+        double valeurSiNonPresent = -1.0;
         int index = successeurs.get(depart).indexOf(destination);
         if (index == -1) {
             if (!oriente) {

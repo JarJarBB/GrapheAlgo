@@ -2,12 +2,43 @@ package graphealgo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class GraphAlgo {
 
     public static void main(String[] args) {
-        testDistancesUnSommet();
-        //new UIGrapheAlgo();
+        //testCheminLePlusCourtSelonDjikstra();
+        new UIGrapheAlgo();
+    }
+    
+    public static void testCheminLePlusCourtSelonDjikstra() {
+
+        ArrayList<Lien> aL = new ArrayList<>(3);
+        aL.add(new Lien(1, 2));
+        aL.add(new Lien(1, 3));
+        aL.add(new Lien(2, 4, 4.0));
+        aL.add(new Lien(3, 4, 2.0));
+        aL.add(new Lien(1, 4, 4.0));
+
+        Graphe G = new Graphe(4, aL);
+        System.out.println(G);
+
+        ArrayList<Integer> pred = Algorithme.cheminLePlusCourtSelonDjikstra(G, 1, 4);
+        System.out.println(pred);
+    }
+    
+    public static void testRangDesSommets() {
+
+        ArrayList<Lien> aL = new ArrayList<>(3);
+        aL.add(new Lien(1, 2));
+        aL.add(new Lien(1, 3));
+        aL.add(new Lien(2, 4, 3.14159));
+
+        Graphe G = new Graphe(4, aL);
+        System.out.println(G);
+
+        int[] rang = Algorithme.rangDesSommets(G);
+        System.out.println(Arrays.toString(rang));
     }
 
     public static void testDistancesUnSommet() {
@@ -21,10 +52,24 @@ public class GraphAlgo {
         System.out.println(G);
 
         int[] distances = Algorithme.distancesUnSommet(G, 1);
-        int[] fs = G.getFileSuccesseurs();
-        int[] aps = G.getAdressesPremierSuccesseur();
         for (int i = 0; i < distances.length; ++i) {
             System.out.println(i + ":" + distances[i]);
+        }
+    }
+    
+        public static void testMatriceDesDistances() {
+
+        ArrayList<Lien> aL = new ArrayList<>(3);
+        aL.add(new Lien(1, 2));
+        aL.add(new Lien(1, 3));
+        aL.add(new Lien(2, 4, 3.14159));
+
+        Graphe G = new Graphe(4, aL);
+        System.out.println(G);
+
+        int[][] distances = Algorithme.matriceDesDistances(G);
+        for (int[] i : distances) {
+            System.out.println(Arrays.toString(i));
         }
     }
 
