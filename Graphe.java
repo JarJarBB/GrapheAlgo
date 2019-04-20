@@ -1,5 +1,12 @@
 package graphealgo;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -302,6 +309,115 @@ public class Graphe {
             return false;
         }
         // renvoie faux si un lien equivalent a L n'est pas trouve
+    }
+
+    public void createFile(String name) {
+        File file = new File(name + ".txt");
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+
+            writer.write(successeurs.size() + "");
+            writer.newLine();
+            for (ArrayList<Integer> array : successeurs) {
+                for (Integer i : array) {
+                    writer.write(i + " ");
+                }
+                if (array.isEmpty()) {
+                    writer.write("0");
+                }
+                writer.newLine();
+            }
+
+            writer.newLine();
+
+            writer.write(poidsLiens.size() + "");
+            writer.newLine();
+            for (ArrayList<Double> array : poidsLiens) {
+                for (Double i : array) {
+                    writer.write(i + " ");
+                }
+                if (array.isEmpty()) {
+                    writer.write("0");
+                }
+                writer.newLine();
+            }
+
+            writer.newLine();
+
+            writer.write(informationsSommets.size() + "");
+            writer.newLine();
+            for (String s : informationsSommets) {
+                writer.write(s);
+                if (s == "") {
+                    writer.write("nothing");
+                }
+                writer.newLine();
+            }
+
+            writer.newLine();
+
+            writer.write(String.valueOf(oriente));
+
+            writer.close();
+        } catch (IOException ex) {
+            System.out.println("erreur creation file");
+        }
+    }
+
+    public void readFile(String name) {
+        String line;
+        try {
+            BufferedReader read = new BufferedReader(new FileReader(name + ".txt"));
+
+            successeurs.removeAll(successeurs);
+
+            line = read.readLine();
+            int size = Integer.parseInt(line);
+            for (int i = 0; i < size; i++) {
+                successeurs.add(new ArrayList<Integer>());
+                line = read.readLine();
+                String[] s = line.split(" ");
+                for (int j = 0; j < s.length; j++) {
+                    Integer aux = Integer.valueOf(s[j]);
+                    if (aux != 0) {
+                        successeurs.get(i).add(aux);
+                    }
+                }
+            }
+
+            poidsLiens.removeAll(poidsLiens);
+
+            line = read.readLine();
+            line = read.readLine();
+
+            size = Integer.parseInt(line);
+            for (int i = 0; i < size; i++) {
+                poidsLiens.add(new ArrayList<Double>());
+                line = read.readLine();
+                String[] s = line.split(" ");
+                for (int j = 0; j < s.length; j++) {
+                    poidsLiens.get(i).add(Double.valueOf(s[j]));
+                }
+            }
+
+            informationsSommets.removeAll(informationsSommets);
+
+            line = read.readLine();
+            line = read.readLine();
+
+            size = Integer.parseInt(line);
+            for (int i = 0; i < size; i++) {
+                informationsSommets.add(read.readLine());
+            }
+
+            line = read.readLine();
+            oriente = Boolean.parseBoolean(read.readLine());
+
+        } catch (FileNotFoundException e) {
+            System.out.println("file not found");
+        } catch (IOException e) {
+            System.out.println("erreur lecture");
+        }
     }
 
     @Override

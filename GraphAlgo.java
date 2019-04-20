@@ -2,15 +2,35 @@ package graphealgo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class GraphAlgo {
 
     public static void main(String[] args) {
-        testGrapheVersCodageDePrufer();
+        testFichiers();
         //new UIGrapheAlgo();
     }
 
+    public static void testFichiers() {
+
+        ArrayList<Lien> aL = new ArrayList<>(4);
+        aL.add(new Lien(1, 2));
+        aL.add(new Lien(2, 3));
+        aL.add(new Lien(2, 4));
+        aL.add(new Lien(4, 5));
+        
+        String nomFichier = "testG1";
+
+        Graphe G1 = new Graphe(5, aL, false);
+        G1.createFile(nomFichier);
+        
+        Graphe G2 = new Graphe();
+        G2.readFile(nomFichier);
+        
+        System.out.println(G1);
+        System.out.println(G2);
+
+        
+    }
     
     public static void testGrapheVersCodageDePrufer() {
 
