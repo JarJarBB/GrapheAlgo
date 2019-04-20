@@ -47,7 +47,6 @@ public final class Algorithme {
         return distances;
     }
 
-//--------------------------------------------
     private static int[] demiDegresInterieurs(int[] fs, int[] aps) {
         int[] ddi = new int[aps[0] + 1];
         ddi[0] = aps[0];
@@ -108,13 +107,77 @@ public final class Algorithme {
         return rang;
     }
 
-//--------------------------------------------
-    public static Graphe grapheReduitSelonTarjan(Graphe G) {
-        throw new UnsupportedOperationException();
+    private static class ComposantesFortementConnnexes {
+
+        public int[] cfc, prem, pilch;
+
+        ComposantesFortementConnnexes(Graphe G) {
+            int[][] dist = matriceDesDistances(G);
+            int nb = 0, s = 0;
+            int n = G.getNombreSommets();
+            cfc = new int[n + 1];
+            prem = new int[n + 1];
+            pilch = new int[n + 1];
+            for (int i = 1; i <= n; i++) {
+                cfc[i] = 0;
+            }
+            cfc[0] = n;
+            for (int i = 1; i <= n; i++) {
+                if (cfc[i] == 0) {
+                    nb++;
+                    cfc[i] = nb;
+                    prem[nb] = i;
+                    s = i;
+                    for (int j = i + 1; j <= n; j++) {
+                        if (cfc[j] == 0) {
+                            if (dist[i][j] != -1 && dist[j][i] != -1) {
+                                pilch[s] = j;
+                                s = j;
+                                cfc[j] = nb;
+                            }
+                        }
+                    }
+                    pilch[s] = 0;
+                }
+            }
+            prem[0] = nb;
+        }
     }
 
-    public static ArrayList<int[]> basesDuGrapheSelonTarjan(Graphe G) {
-        throw new UnsupportedOperationException();
+    public static Graphe grapheReduitSelonTarjan(Graphe G) {
+        ComposantesFortementConnnexes C = new ComposantesFortementConnnexes(G);
+        int[] fs = G.getFileSuccesseurs();
+        int[] aps = G.getAdressesPremierSuccesseur();
+        int n = G.getNombreSommets();
+        ArrayList<Lien> liensReduit = new ArrayList<>();
+        for (int i = 1; i <= n ; i++) {
+            for (int k = aps[i]; fs[k] != 0; k++) {
+                int j = fs[k];
+                Lien L = new Lien(C.cfc[i], C.cfc[j]);
+                if (L.depart != L.destination && !liensReduit.contains(L)) {
+                   liensReduit.add(L); 
+                }
+            }
+            
+        }
+        
+        return new Graphe(C.prem[0], liensReduit);
+    }
+
+    public static ArrayList<ArrayList<Integer>> basesDuGrapheSelonTarjan(Graphe G) {
+        ComposantesFortementConnnexes C = new ComposantesFortementConnnexes(G);
+        ArrayList<ArrayList<Integer>> bases = new ArrayList<>(C.prem[0]);
+        for (int i = 1; i <= C.prem[0]; i++) {
+            ArrayList<Integer> B = new ArrayList<>();
+            int sommet = C.prem[i];
+            while (sommet != 0) {
+                B.add(sommet);
+                sommet = C.pilch[sommet];
+            }
+            bases.add(B);
+        }
+
+        return bases;
     }
 
     public static ArrayList<String[]> cheminsCritiques(Graphe G) {

@@ -7,13 +7,52 @@ import java.util.List;
 public class GraphAlgo {
 
     public static void main(String[] args) {
-        //testCheminLePlusCourtSelonDjikstra();
-        new UIGrapheAlgo();
+        testGrapheReduitSelonTarjan();
+        //new UIGrapheAlgo();
     }
-    
+
+    public static void testGrapheReduitSelonTarjan() {
+
+        ArrayList<Lien> aL = new ArrayList<>(7);
+        aL.add(new Lien(1, 2));
+        aL.add(new Lien(2, 1));
+        aL.add(new Lien(3, 4));
+        aL.add(new Lien(4, 3));
+        aL.add(new Lien(1, 3));
+        aL.add(new Lien(4, 5));
+        aL.add(new Lien(5, 4));
+
+        Graphe G = new Graphe(5, aL);
+        System.out.println(G);
+
+        Graphe GReduit = Algorithme.grapheReduitSelonTarjan(G);
+        System.out.println(GReduit);
+    }
+
+    public static void testBasesDuGrapheSelonTarjan() {
+
+        ArrayList<Lien> aL = new ArrayList<>(7);
+        aL.add(new Lien(1, 2));
+        aL.add(new Lien(2, 1));
+        aL.add(new Lien(3, 4));
+        aL.add(new Lien(4, 3));
+        aL.add(new Lien(1, 3));
+        aL.add(new Lien(4, 5));
+        aL.add(new Lien(5, 4));
+
+        Graphe G = new Graphe(5, aL);
+        System.out.println(G);
+
+        ArrayList<ArrayList<Integer>> bases = Algorithme.basesDuGrapheSelonTarjan(G);
+        for (ArrayList<Integer> B : bases) {
+            System.out.println(B);
+        }
+
+    }
+
     public static void testCheminLePlusCourtSelonDjikstra() {
 
-        ArrayList<Lien> aL = new ArrayList<>(3);
+        ArrayList<Lien> aL = new ArrayList<>(5);
         aL.add(new Lien(1, 2));
         aL.add(new Lien(1, 3));
         aL.add(new Lien(2, 4, 4.0));
@@ -26,7 +65,7 @@ public class GraphAlgo {
         ArrayList<Integer> pred = Algorithme.cheminLePlusCourtSelonDjikstra(G, 1, 4);
         System.out.println(pred);
     }
-    
+
     public static void testRangDesSommets() {
 
         ArrayList<Lien> aL = new ArrayList<>(3);
@@ -56,8 +95,8 @@ public class GraphAlgo {
             System.out.println(i + ":" + distances[i]);
         }
     }
-    
-        public static void testMatriceDesDistances() {
+
+    public static void testMatriceDesDistances() {
 
         ArrayList<Lien> aL = new ArrayList<>(3);
         aL.add(new Lien(1, 2));
