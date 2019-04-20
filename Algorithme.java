@@ -150,17 +150,17 @@ public final class Algorithme {
         int[] aps = G.getAdressesPremierSuccesseur();
         int n = G.getNombreSommets();
         ArrayList<Lien> liensReduit = new ArrayList<>();
-        for (int i = 1; i <= n ; i++) {
+        for (int i = 1; i <= n; i++) {
             for (int k = aps[i]; fs[k] != 0; k++) {
                 int j = fs[k];
                 Lien L = new Lien(C.cfc[i], C.cfc[j]);
                 if (L.depart != L.destination && !liensReduit.contains(L)) {
-                   liensReduit.add(L); 
+                    liensReduit.add(L);
                 }
             }
-            
+
         }
-        
+
         return new Graphe(C.prem[0], liensReduit);
     }
 
@@ -257,7 +257,37 @@ public final class Algorithme {
     }
 
     public static int[] grapheVersCodageDePrufer(Graphe G) {
-        throw new UnsupportedOperationException();
+        int[][] A = G.getMatriceAdjacente();
+        int n = G.getNombreSommets() - 2;
+        int[] t = new int[n + 1];
+        t[0] = n;
+        int cpt;
+        for (int i = 1; i <= n + 2; ++i) {
+            cpt = 0;
+            for (int j = 1; j <= n + 2; ++j) {
+                if (A[i][j] == 1) {
+                    cpt++;
+                }
+            }
+            A[i][0] = cpt;
+        }
+        int i, j;
+        for (int k = 1; k <= n; ++k) {
+            i = 1;
+            while (A[i][0] != 1) {
+                ++i;
+            }
+            j = 1;
+            while (A[i][j] != 1) {
+                ++j;
+            }
+            t[k] = j;
+            A[i][0] = 0;
+            A[j][0]--;
+            A[i][j] = 0;
+            A[j][i] = 0;
+        }
+        return t;
     }
 
 }

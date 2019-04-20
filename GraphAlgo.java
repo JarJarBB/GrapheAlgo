@@ -7,26 +7,24 @@ import java.util.List;
 public class GraphAlgo {
 
     public static void main(String[] args) {
-        testGrapheReduitSelonTarjan();
+        testGrapheVersCodageDePrufer();
         //new UIGrapheAlgo();
     }
 
-    public static void testGrapheReduitSelonTarjan() {
+    
+    public static void testGrapheVersCodageDePrufer() {
 
-        ArrayList<Lien> aL = new ArrayList<>(7);
+        ArrayList<Lien> aL = new ArrayList<>(4);
         aL.add(new Lien(1, 2));
-        aL.add(new Lien(2, 1));
-        aL.add(new Lien(3, 4));
-        aL.add(new Lien(4, 3));
-        aL.add(new Lien(1, 3));
+        aL.add(new Lien(2, 3));
+        aL.add(new Lien(2, 4));
         aL.add(new Lien(4, 5));
-        aL.add(new Lien(5, 4));
 
-        Graphe G = new Graphe(5, aL);
-        System.out.println(G);
 
-        Graphe GReduit = Algorithme.grapheReduitSelonTarjan(G);
-        System.out.println(GReduit);
+        Graphe G = new Graphe(5, aL, false);
+
+        int[] t = Algorithme.grapheVersCodageDePrufer(G);
+        System.out.println(Arrays.toString(t));
     }
 
     public static void testBasesDuGrapheSelonTarjan() {
@@ -47,9 +45,26 @@ public class GraphAlgo {
         for (ArrayList<Integer> B : bases) {
             System.out.println(B);
         }
-
     }
+    
+    public static void testGrapheReduitSelonTarjan() {
 
+        ArrayList<Lien> aL = new ArrayList<>(7);
+        aL.add(new Lien(1, 2));
+        aL.add(new Lien(2, 1));
+        aL.add(new Lien(3, 4));
+        aL.add(new Lien(4, 3));
+        aL.add(new Lien(1, 3));
+        aL.add(new Lien(4, 5));
+        aL.add(new Lien(5, 4));
+
+        Graphe G = new Graphe(5, aL);
+        System.out.println(G);
+
+        Graphe GReduit = Algorithme.grapheReduitSelonTarjan(G);
+        System.out.println(GReduit);
+    }
+    
     public static void testCheminLePlusCourtSelonDjikstra() {
 
         ArrayList<Lien> aL = new ArrayList<>(5);
