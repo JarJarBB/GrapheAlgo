@@ -181,7 +181,7 @@ public final class Algorithme {
     }
 
     public static ArrayList<String[]> cheminsCritiques(Graphe G) {
-        throw new UnsupportedOperationException(); // voir cours L3
+        throw new UnsupportedOperationException();
     }
 
     public static double[] datesAuPlusTard(Graphe G) {
@@ -252,8 +252,39 @@ public final class Algorithme {
         throw new UnsupportedOperationException();
     }
 
+    private static boolean estPresent(int APartirDeIndice, int[] T, int element) {
+        int i = APartirDeIndice;
+        while (i < T.length && T[i] != element) {
+            i++;
+        }
+
+        return i != T.length;
+    }
+
     public static Graphe codageDePruferVersGraphe(int[] codeDePrufer) {
-        throw new UnsupportedOperationException();
+
+        boolean[] I = new boolean[codeDePrufer.length + 2];
+        ArrayList<Lien> liens = new ArrayList<>();
+
+        for (int i = 1; i < codeDePrufer.length; i++) {
+            int j = 1;
+            while (I[j] || estPresent(i, codeDePrufer, j)) {
+                j++;
+            }
+            I[j] = true;
+            liens.add(new Lien(codeDePrufer[i], j));
+        }
+        int depart = 1;
+        while (I[depart]) {
+            depart++;
+        }
+        int destination = depart + 1;
+        while (I[destination]) {
+            destination++;
+        }
+        liens.add(new Lien(depart, destination));
+
+        return new Graphe(I.length - 1, liens, false);
     }
 
     public static int[] grapheVersCodageDePrufer(Graphe G) {
@@ -287,6 +318,7 @@ public final class Algorithme {
             A[i][j] = 0;
             A[j][i] = 0;
         }
+
         return t;
     }
 

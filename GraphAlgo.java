@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class GraphAlgo {
 
     public static void main(String[] args) {
-        testFichiers();
+        testCodageDePruferVersGraphe();
         //new UIGrapheAlgo();
     }
 
@@ -17,22 +17,21 @@ public class GraphAlgo {
         aL.add(new Lien(2, 3));
         aL.add(new Lien(2, 4));
         aL.add(new Lien(4, 5));
-        
+
         String nomFichier = "testG1";
 
         Graphe G1 = new Graphe(5, aL, false);
         G1.createFile(nomFichier);
-        
+
         Graphe G2 = new Graphe();
         G2.readFile(nomFichier);
-        
+
         System.out.println(G1);
         System.out.println(G2);
 
-        
     }
-    
-    public static void testGrapheVersCodageDePrufer() {
+
+    public static void testCodageDePruferVersGraphe() {
 
         ArrayList<Lien> aL = new ArrayList<>(4);
         aL.add(new Lien(1, 2));
@@ -40,6 +39,24 @@ public class GraphAlgo {
         aL.add(new Lien(2, 4));
         aL.add(new Lien(4, 5));
 
+        Graphe G = new Graphe(5, aL, false);
+        System.out.println(G);
+        int[] t = Algorithme.grapheVersCodageDePrufer(G);
+        System.out.println(Arrays.toString(t));
+        Graphe G2 = Algorithme.codageDePruferVersGraphe(t);
+        System.out.println(G2);
+        int[] t2 = Algorithme.grapheVersCodageDePrufer(G2);
+        System.out.println(Arrays.toString(t2));
+        System.out.println(Algorithme.codageDePruferVersGraphe(t2));
+    }
+
+    public static void testGrapheVersCodageDePrufer() {
+
+        ArrayList<Lien> aL = new ArrayList<>(4);
+        aL.add(new Lien(1, 2));
+        aL.add(new Lien(2, 3));
+        aL.add(new Lien(2, 4));
+        aL.add(new Lien(4, 5));
 
         Graphe G = new Graphe(5, aL, false);
 
@@ -66,7 +83,7 @@ public class GraphAlgo {
             System.out.println(B);
         }
     }
-    
+
     public static void testGrapheReduitSelonTarjan() {
 
         ArrayList<Lien> aL = new ArrayList<>(7);
@@ -84,7 +101,7 @@ public class GraphAlgo {
         Graphe GReduit = Algorithme.grapheReduitSelonTarjan(G);
         System.out.println(GReduit);
     }
-    
+
     public static void testCheminLePlusCourtSelonDjikstra() {
 
         ArrayList<Lien> aL = new ArrayList<>(5);
