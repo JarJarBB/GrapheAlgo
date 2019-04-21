@@ -1,9 +1,9 @@
-Le fichier Graphe.java contient le graphe en lui-même.
+Le fichier Graphe.java contient le graphe en lui-mÃªme.
 
 Le fichier Algorithme.java contient les algorithmes qui manipulent le graphe.
 
-Le fichier Lien.java contient les liens, c'est-à-dire les arrêtes et les arcs.
+Le fichier Lien.java contient les liens, c'est-Ã -dire les arrÃªtes et les arcs.
 
-Le fichier UIGrapheAlgo.java contient une ébauche d'une interface graphique.
+Le fichier UIGrapheAlgo.java contient une Ã©bauche d'une interface graphique.
 
-Enfin, le fichier GraphAlgo.java est le point d'entrée du programme, il contient le main est les exemples et tests.
+Enfin, le fichier GraphAlgo.java est le point d'entrÃ©e du programme, il contient le main et les exemples et tests.
