@@ -6,8 +6,64 @@ import java.util.Arrays;
 public class GraphAlgo {
 
     public static void main(String[] args) {
-        testCodageDePruferVersGraphe();
+        exempleCheminLePlusCourtSelonDjikstra();
         //new UIGrapheAlgo();
+    }
+
+    public static void exempleCheminLePlusCourtSelonDjikstra() {
+
+        ArrayList<Lien> aL = new ArrayList<>(28);
+        aL.add(new Lien(1, 6, 200));
+        aL.add(new Lien(6, 1, 200));
+        aL.add(new Lien(1, 9, 500));
+        aL.add(new Lien(9, 1, 500));
+        aL.add(new Lien(1, 2, 600));
+        aL.add(new Lien(2, 1, 600));
+        aL.add(new Lien(1, 3, 1000));
+        aL.add(new Lien(3, 1, 1000));
+        aL.add(new Lien(1, 8, 480));
+        aL.add(new Lien(8, 1, 480));
+        aL.add(new Lien(1, 10, 400));
+        aL.add(new Lien(10, 1, 400));
+        aL.add(new Lien(8, 10, 80));
+        aL.add(new Lien(10, 8, 80));
+        aL.add(new Lien(8, 5, 450));
+        aL.add(new Lien(5, 8, 450));
+        aL.add(new Lien(4, 5, 250));
+        aL.add(new Lien(5, 4, 250));
+        aL.add(new Lien(4, 3, 320));
+        aL.add(new Lien(3, 4, 320));
+        aL.add(new Lien(2, 3, 190));
+        aL.add(new Lien(3, 2, 190));
+        aL.add(new Lien(7, 3, 210));
+        aL.add(new Lien(3, 7, 210));
+        aL.add(new Lien(7, 2, 300));
+        aL.add(new Lien(2, 7, 300));
+        aL.add(new Lien(9, 2, 520));
+        aL.add(new Lien(2, 9, 520));
+
+        Graphe G = new Graphe(10, aL);
+
+        G.setInformation(1, "Paris");
+        G.setInformation(2, "Lyon");
+        G.setInformation(3, "Marseille");
+        G.setInformation(4, "Toulouse");
+        G.setInformation(5, "Bordeaux");
+        G.setInformation(6, "Lille");
+        G.setInformation(7, "Nice");
+        G.setInformation(8, "Nantes");
+        G.setInformation(9, "Strasbourg");
+        G.setInformation(10, "Rennes");
+
+        System.out.println(G);
+        int depart = 6, arrivee = 4;
+        ArrayList<Integer> pred = Algorithme.cheminLePlusCourtSelonDjikstra(G, depart, arrivee);
+        System.out.println(pred + "\n" + "Le chemin le plus de court de " + G.getInformation(depart) + " jusqu'à " + G.getInformation(arrivee) + " est donc le suivant : ");
+
+        for (int idVille : pred) {
+            System.out.println(G.getInformation(idVille));
+        }
+
     }
 
     public static void testFichiers() {
@@ -100,22 +156,6 @@ public class GraphAlgo {
 
         Graphe GReduit = Algorithme.grapheReduitSelonTarjan(G);
         System.out.println(GReduit);
-    }
-
-    public static void testCheminLePlusCourtSelonDjikstra() {
-
-        ArrayList<Lien> aL = new ArrayList<>(5);
-        aL.add(new Lien(1, 2));
-        aL.add(new Lien(1, 3));
-        aL.add(new Lien(2, 4, 4.0));
-        aL.add(new Lien(3, 4, 2.0));
-        aL.add(new Lien(1, 4, 4.0));
-
-        Graphe G = new Graphe(4, aL);
-        System.out.println(G);
-
-        ArrayList<Integer> pred = Algorithme.cheminLePlusCourtSelonDjikstra(G, 1, 4);
-        System.out.println(pred);
     }
 
     public static void testRangDesSommets() {
