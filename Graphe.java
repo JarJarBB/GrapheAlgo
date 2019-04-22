@@ -12,10 +12,10 @@ import java.util.Collections;
 
 public class Graphe {
 
-    private ArrayList<ArrayList<Integer>> successeurs;
-    private ArrayList<ArrayList<Double>> poidsLiens;
-    private ArrayList<String> informationsSommets;
-    private boolean oriente;
+    ArrayList<ArrayList<Integer>> successeurs;
+    ArrayList<ArrayList<Double>> poidsLiens;
+    ArrayList<String> informationsSommets;
+    boolean oriente;
 
     public Graphe(boolean _oriente) {
         successeurs = new ArrayList<>();

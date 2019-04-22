@@ -249,7 +249,54 @@ public final class Algorithme {
     }
 
     public static Graphe grapheMinimalSelonKruskal(Graphe G) {
-        throw new UnsupportedOperationException();
+        ArrayList<Lien> lienCroissant = new ArrayList<>();
+        ArrayList<ArrayList<Double>> copiePoidsLien = (ArrayList<ArrayList<Double>>) G.poidsLiens.clone();
+        ArrayList<ArrayList<Integer>> copieSuccesseurs = (ArrayList<ArrayList<Integer>>) G.successeurs.clone();
+
+        double poids;
+
+        int nbIteration = 0;
+        for (int i = 0; i < copiePoidsLien.size(); i++) {
+            nbIteration += copiePoidsLien.get(i).size();
+        }
+
+        int i2, j2;
+        for (int iteration = 0; iteration < nbIteration; iteration++) {
+            i2 = 0;
+            j2 = 0;
+            poids = Double.MAX_VALUE;
+            for (int i = 0; i < copiePoidsLien.size(); i++) {
+                for (int j = 0; j < copiePoidsLien.get(i).size(); j++) {
+                    if (copiePoidsLien.get(i).get(j) <= poids) {
+                        poids = copiePoidsLien.get(i).get(j);
+                        i2 = i;
+                        j2 = j;
+                    }
+                }
+            }
+            lienCroissant.add(new Lien(i2, copieSuccesseurs.get(i2).get(j2), poids));
+            copieSuccesseurs.get(i2).remove(j2);
+            copiePoidsLien.get(i2).remove(j2);
+        }
+
+        ArrayList<Integer> l = new ArrayList<>();
+        ArrayList<Lien> lienUnique = new ArrayList<>();
+
+        int i = 0;
+        while (l.size() < G.successeurs.size() - 1) {
+            if (!l.contains(lienCroissant.get(i).depart) || !l.contains(lienCroissant.get(i).destination)) {
+                lienUnique.add(lienCroissant.get(i));
+                if (!l.contains(lienCroissant.get(i).depart)) {
+                    l.add(lienCroissant.get(i).depart);
+                }
+                if (!l.contains(lienCroissant.get(i).destination)) {
+                    l.add(lienCroissant.get(i).destination);
+                }
+            }
+            i++;
+        }
+
+        return new Graphe(l.size(), lienUnique, false);
     }
 
     private static boolean estPresent(int APartirDeIndice, int[] T, int element) {
